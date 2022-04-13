@@ -20,13 +20,10 @@ dotenv.config({ path: "./config/.env" });
 //Connect to database
 connectDB();
 
-//Set static folder
-app.use(express.static(path.join(__dirname, "public")));
-
 //Mount Routers
 app.use("/api/users", users);
 
-const PORT = process.env.PORT || 6900;
+const PORT = process.env.PORT || 7000;
 
 const server = app.listen(
   PORT,

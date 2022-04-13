@@ -5,17 +5,17 @@ const Employee = require("../models/employee");
 const { json } = require("body-parser");
 const { request } = require("@octokit/request");
 const jwt = require("jsonwebtoken");
-const { getDistance } = require("geolib");
 
 //@route   POST /api/users/register
 //@access  Public
 
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
-  const em = await User.findOne({ email });
-
-  if (em) {
-    return next(new ErrorResponse("User with that email already exists", 404));
+  const userCheck = await User.findOne({ email: email });
+  if (userCheck) {
+    res.status(400).json({
+      message: "Employee with this email already exists",
+    });
   }
 
   const user = await User.create({ email, name, password, role });
@@ -122,7 +122,17 @@ exports.updateEmployee = asyncHandler(async (req, res, next) => {
     salary: salary,
     tax: tax,
   };
+
+  console.log({ email });
   try {
+    const userCheck = await Employee.findOne({ email: email });
+
+    if (!userCheck) {
+      res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
     const user = await Employee.findOneAndUpdate(email, fieldsToUpdate, {
       new: true,
     });
