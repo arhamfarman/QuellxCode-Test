@@ -34,6 +34,13 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  appleId: {
+    type: String,
+  },
+  appleVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Encrypt Password using Bcrypt

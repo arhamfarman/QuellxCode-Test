@@ -1,6 +1,9 @@
 const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const http = require("http");
+const passport = require("passport");
+
 const dotenv = require("dotenv");
 const connectDB = require("./config/database");
 const app = express();
@@ -13,6 +16,22 @@ app.use(express.json());
 
 // // Cookie Parser
 app.use(cookieParser());
+
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function (obj, cb) {
+  cb(null, obj);
+});
+
+app.use(
+  require("express-session")({
+    secret: "apple cat",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 //Load the env variables
 dotenv.config({ path: "./config/.env" });

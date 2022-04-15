@@ -284,3 +284,25 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
   });
 };
+
+exports.removeAppleId = asyncHandler(async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const fieldsToUpdate = {
+      appleVerified: false,
+      appleId: null,
+    };
+
+    const user = await Employee.findOneAndUpdate(email, fieldsToUpdate, {
+      new: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: "User Logged in wiht apple id removed Successfully",
+    });
+  } catch (err) {
+    return next(new ErrorResponse(err, 400));
+  }
+});
